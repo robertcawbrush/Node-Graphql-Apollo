@@ -1,4 +1,6 @@
 node_modules/**/*
+
+# random ignores from old repo
 .expo/*
 npm-debug.*
 *.jks
