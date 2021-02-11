@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+    redis:
+      image: "redis:alpine" # TODO: before prod set protected mode and add password
+    database:
+      image: "postgres:latest"
+      environment: 
+        POSTGRES_PASSWORD: 'password123' # TODO: put in ENV file or docker _FILE?
+        POSTGRES_DB: 'capsule'
+      ports:
+        - 5432:5432
