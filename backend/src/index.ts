@@ -31,7 +31,6 @@ const main = async () => {
 		console.log('listening on localhost:4000');
 	});
 
-
 }
 
 main().catch(err => {

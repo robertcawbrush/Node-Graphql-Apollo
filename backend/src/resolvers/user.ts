@@ -64,7 +64,7 @@ class UserResolver {
 		} catch (err) {
 			if (err.code === '23505') { // postgres dupe key error
 				return {
-					errors: [{ field: 'username', message: 'username has already been taken'}]
+					errors: [{ field: 'username', message: 'username has already been taken' }]
 				}
 			}
 		}
@@ -102,6 +102,7 @@ class UserResolver {
 		return {
 			user,
 		}
-	}}
+	}
+}
 
-	export default UserResolver;
+export default UserResolver;
