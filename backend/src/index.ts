@@ -31,9 +31,6 @@ const main = async () => {
 		console.log('listening on localhost:4000');
 	});
 
-	// const post = orm.em.create(Post, { title: 'my first post' });
-	// await orm.em.persistAndFlush(post);
-
 
 }
 

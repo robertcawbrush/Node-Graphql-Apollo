@@ -10,7 +10,7 @@ export default {
 		pattern: /^[\w-]+\d+\.[tj]s$/, 
 	},
 	entities: [Post, User],
-	dbName: "lireddit",
+	dbName: "capsule",
 	type: 'postgresql',
 	password: 'password123',
 	debug: !__prod__
