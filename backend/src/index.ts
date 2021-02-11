@@ -5,7 +5,6 @@ import express from 'express';
 import mikroConfig from './mikro-orm.config';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
-import HelloResolver from "./resolvers/hello";
 import PostResolver from "./resolvers/post";
 import UserResolver from './resolvers/user';
 
