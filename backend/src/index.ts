@@ -5,6 +5,11 @@ import express from 'express';
 import mikroConfig from './mikro-orm.config';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
+
+import redis from 'redis';
+import connectRedis from 'connect-redis';
+import session from 'express-session';
+
 import PostResolver from "./resolvers/post";
 import UserResolver from './resolvers/user';
 
@@ -16,12 +21,36 @@ const main = async () => {
 
 	const app = express();
 
+	const RedisStore = connectRedis(session);
+	const redisClient = redis.createClient();
+
+	app.use(
+		session(
+			{
+				name: 'cookId',
+				store: new RedisStore({
+					client: redisClient,
+					// TODO: add TTL and reenable touch
+					disableTouch: true			
+				}),
+				cookie: {
+					maxAge: 1000 * 60 * 60 * 24 * 365 * 5,
+					httpOnly: true,
+					sameSite: 'lax', // csrf
+					secure: __prod__ // TODO: set if use https in prod
+				},
+				secret: "big wizzy", // TODO: hash something better and ENV hide this
+				resave: false
+			}
+		)
+	);
+
 	const apolloServer = new ApolloServer({
 		schema: await buildSchema({
-			resolvers: [HelloResolver, PostResolver, UserResolver],
+			resolvers: [PostResolver, UserResolver],
 			validate: false
 		}),
-		context: () => ({ em: orm.em })
+		context: (req, res) => ({ em: orm.em, req, res })
 	});
 
 	apolloServer.applyMiddleware({ app });
