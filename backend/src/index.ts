@@ -12,6 +12,7 @@ import session from 'express-session';
 
 import PostResolver from "./resolvers/post";
 import UserResolver from './resolvers/user';
+import { MyContext } from './types';
 
 const main = async () => {
 
@@ -31,15 +32,15 @@ const main = async () => {
 				store: new RedisStore({
 					client: redisClient,
 					// TODO: add TTL and reenable touch
-					disableTouch: true			
+					disableTouch: true
 				}),
 				cookie: {
-					maxAge: 1000 * 60 * 60 * 24 * 365 * 5,
+					maxAge: 1000 * 60 * 60 * 24 * 365,
 					httpOnly: true,
 					sameSite: 'lax', // csrf
 					secure: __prod__ // TODO: set if use https in prod
 				},
-				secret: "big wizzy", // TODO: hash something better and ENV hide this
+				secret: "bigwizzy", // TODO: hash something better and ENV hide this
 				resave: false
 			}
 		)
@@ -50,7 +51,7 @@ const main = async () => {
 			resolvers: [PostResolver, UserResolver],
 			validate: false
 		}),
-		context: (req, res) => ({ em: orm.em, req, res })
+		context: ({ req, res }): MyContext => ({ em: orm.em, req, res })
 	});
 
 	apolloServer.applyMiddleware({ app });
